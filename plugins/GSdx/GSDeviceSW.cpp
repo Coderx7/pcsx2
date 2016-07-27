@@ -82,7 +82,16 @@ void GSDeviceSW::ClearRenderTarget(GSTexture* t, uint32 c)
 
 void GSDeviceSW::ClearDepth(GSTexture* t, float c)
 {
-	Clear(t, *(uint32*)&c);
+	// Value is normalized so it ranges from 0.0 to 1.0f. We need to convert to
+	// real integral value.
+	// Note: it depends on the size of the depth format
+	//
+	// floor(c * (exp2f(bit_depth_32_or_24_or_16) - 1.0f) + 0.5f)
+
+	// Practically, the only sane and only used value for the parameter is 0.0f, so let's not bother
+
+	ASSERT(c == 0.0f);
+	Clear(t, 0);
 }
 
 void GSDeviceSW::ClearStencil(GSTexture* t, uint8 c)
